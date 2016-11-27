@@ -3,9 +3,14 @@
 #include <stdlib.h>
 #include "functions.h"
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    if (argc < 2){
+        perror("Directory argument missing");
+        exit(1);
+    }
+
     char files[32][32];
-    int countFiles = readFiles(files, "mickey");
+    int countFiles = readFiles(files, argv[1]);
     if (countFiles == -1) {
         return -1;
     }
