@@ -1,37 +1,13 @@
-#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-int compare_func(const void *a,const void *b) {
-    return (strcmp((char *)a,(char *)b));
-}
+#include "functions.h"
 
 int main(void) {
-    DIR *dir;
-    struct dirent *dirEntry;
     char files[32][32];
-    int countFiles = 0;
-
-    dir = opendir("mickey");
-    if (!dir) {
-        perror ("could not read directory");
+    int countFiles = readFiles(files, "mickey");
+    if (countFiles == -1) {
         return -1;
-    }
-
-    while ((dirEntry = readdir(dir)) != NULL) {
-        if (dirEntry->d_type == DT_REG) {
-            strcpy(files[countFiles], "mickey/");
-            strcat(files[countFiles], dirEntry->d_name);
-            countFiles++;
-        }
-    }
-    closedir(dir);
-
-    qsort (files[0], countFiles, sizeof(files[0]), compare_func);
-
-    for (int i = 0; i < countFiles; i++) {
-        puts(files[i]);
     }
 
     size_t lineSize = sizeof(char) * 30;
