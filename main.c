@@ -10,36 +10,14 @@ int main(int argc, char *argv[]) {
     }
 
     char files[32][32];
-    int countFiles = readFiles(files, argv[1]);
-    if (countFiles == -1) {
+    int countFiles = getFiles(files, argv[1]);
+    if (countFiles == -1)
         return -1;
-    }
 
     size_t lineSize = sizeof(char) * 30;
-    char line[lineSize];
     char parts[countFiles][30][lineSize];
-    int count = 0;
-    FILE * file = NULL;
-
-    // read each part and add them to arrays of parts
-    for (int part = 0; part < countFiles; part++) {
-        // Try and open the file for reading, or exit with error
-        file = fopen(files[part], "r");
-        if (file == NULL){
-            perror("Could not open file");
-            return -1;
-        }
-
-        // Read each line and add them to array of lines in the part
-        while (fgets(line, 30, file)) {
-            strcpy(parts[part][count], line);
-            strtok(parts[part][count], "\n");
-            count++;
-        }
-
-        count = 0;
-        fclose(file);
-    }
+    if (readFiles(files, countFiles, parts) == -1)
+        return -1;
 
 
     FILE *fp;
